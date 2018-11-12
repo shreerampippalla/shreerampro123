@@ -1,0 +1,21 @@
+Declare
+v_id NUMBER(6);
+v_name VARCHAR(50);
+v_email VARCHAR(50);
+v_contact NUMBER(10);
+v_address VARCHAR(50);
+v_mentor VARCHAR(50);
+v_domain VARCHAR(50);
+v_module_id NUMBER(6);
+v_choice NUMBER(2);
+v_d_name VARCHAR(50);
+s_id NUMBER(6);
+PROCEDURE Trainee_Info (v_id IN NUMBER)
+AS
+BEGIN
+SELECT T_name,email,contact,address,mentor,domain INTO v_name,v_email,v_contact,v_address,v_mentor,v_domain FROM TRAINEE WHERE t_id=v_id;
+if(sysdate)
+
+
+END;
+END; 

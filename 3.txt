@@ -1,0 +1,22 @@
+select * from module2 where to_char(sysdate) < m2_end_date160722
+/
+***********************************************************
+
+DECLARE
+v_id NUMBER(6);
+v_name VARCHAR(50);
+v_domain VARCHAR(50);
+PROCEDURE Trainee_Info (v_id IN NUMBER)
+AS
+BEGIN
+	SELECT T_name,domain INTO v_name,v_domain FROM TRAINEE WHERE t_id=v_id;
+	DBMS_OUTPUT.PUT_LINE('**********Trainee details************');
+	DBMS_OUTPUT.PUT_LINE('Id:'||v_id);	
+	DBMS_OUTPUT.PUT_LINE('Name:'||v_name);
+	DBMS_OUTPUT.PUT_LINE('Domain:'||v_domain);
+END;		
+BEGIN
+v_id := &Trainee_id;
+Trainee_Info(v_id);
+END;	
+/

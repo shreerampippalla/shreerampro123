@@ -1,0 +1,53 @@
+DECLARE
+v_t_id NUMBER(6);
+v_d_name VARCHAR(30);
+sys_date date;
+v_start1 date;
+v_start2 date;
+v_start3 date;
+v_end1 date;
+v_end2 date;
+v_end3 date;
+v_module1 VARCHAR(30);
+v_module2 VARCHAR(30);
+v_module3 VARCHAR(30);
+mod1 VARCHAR(30);
+mod2 VARCHAR(30);
+mod3 VARCHAR(30);
+PROCEDURE Trainee(v_t_id IN NUMBER)
+IS
+BEGIN
+	SELECT domain INTO v_d_name FROM TRAINEE WHERE T_ID=v_t_id;
+        select module1_name, m1_start_date, m1_end_date INTO v_module1, v_start1, v_end1 from module1 where D_name=v_d_name;
+        select module2_name, m2_start_date, m2_end_date INTO v_module2, v_start2, v_end2 from module2 where D_name=v_d_name;
+        select module3_name, m3_start_date, m3_end_date INTO v_module3, v_start3, v_end3 from module3 where D_name=v_d_name;
+        if v_d_name='RDBMS' 
+	THEN
+        select v_module1 as mod1 from module1 where v_start1 < to_char(sysdate) AND to_char(sysdate) < v_end1 AND D_name=v_d_name;
+        select v_module2 as mod2 from module2 where v_start2 < to_char(sysdate) AND to_char(sysdate) < v_end2 AND D_name=v_d_name;
+        select V_module3 as mod3 from module3 where v_start3 < to_char(sysdate) AND to_char(sysdate) < v_end3 AND D_name=v_d_name;
+            if  mod1 <> NULL
+               THEN 
+               dbms_output.put_line('Id:'||v_t_id);
+	       dbms_output.put_line('Domain:'||v_d_name);
+	       dbms_output.put_line('MOdule running:'||mod1);
+	    end if;
+            if mod2 <> NULL 
+               THEN 
+               dbms_output.put_line('Id:'||v_t_id);
+	       dbms_output.put_line('Domain:'||v_d_name);
+	       dbms_output.put_line('MOdule running:'||mod2);
+            end if;
+            if mod3 <> NULL 
+               THEN 
+               dbms_output.put_line('Id:'||v_t_id);
+	       dbms_output.put_line('Domain:'||v_d_name);
+	       dbms_output.put_line('MOdule running:'||mod3);
+             end if;
+      end if;
+END;
+BEGIN
+v_t_id := &Trainee_id;
+Trainee(v_t_id);
+END;
+/

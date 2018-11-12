@@ -1,0 +1,80 @@
+DECLARE
+v_t_id NUMBER(6):=&trainee_id;
+v_d_name VARCHAR(30);
+v_mod VARCHAR(10);
+v_start_date1 DATE;
+v_end_date1 DATE;
+v_start_date2 DATE;
+v_end_date2 DATE;
+v_start_date3 DATE;
+v_end_date3 DATE;
+sys_date date;
+v_start1 NUMBER;
+v_start2 NUMBER;
+v_start3 NUMBER;
+PROCEDURE Trainee(v_t_id IN NUMBER)
+IS
+BEGIN
+	SELECT domain INTO v_d_name FROM TRAINEE WHERE T_ID=v_t_id;
+        if v_d_name='RDBMS'
+	THEN
+		SELECT M1_START_DATE,M1_END_DATE INTO v_start_date1,v_end_date1 FROM MODULE1 WHERE D_NAME=v_d_name;
+		SELECT M2_START_DATE,M2_END_DATE INTO v_start_date2,v_end_date2 FROM MODULE2 WHERE D_NAME=v_d_name;
+		SELECT M3_START_DATE,M3_END_DATE INTO v_start_date3,v_end_date3 FROM MODULE3 WHERE D_NAME=v_d_name;
+		select to_date(sysdate,'DD/MM/YYYY') into sys_date from dual;
+		v_start1=TO_CHAR('v_start_date1','YYYYMMDD');
+		v_start2=TO_CHAR('v_start_date2','YYYYMMDD');
+		v_start3=TO_CHAR('v_start_date3','YYYYMMDD');
+		dbms_output.put_line(v_start1 || '	' || v_end_date1);
+		dbms_output.put_line(v_start2 || '	' || v_end_date2);
+		dbms_output.put_line(v_start3 || '	' || v_end_date3);
+		dbms_output.put_line(sys_date);
+		IF ((sys_date > v_end_date1))  
+		THEN
+			DBMS_OUTPUT.PUT_LINE('FIRST IF');
+			IF ((sys_date > v_end_date2)) 
+			THEN
+				DBMS_OUTPUT.PUT_LINE('SECOND IF');
+				IF ((sys_date > v_end_date3))
+				THEN
+					DBMS_OUTPUT.PUT_LINE('THIRD IF');
+					DBMS_OUTPUT.PUT_LINE('Domain:'||v_d_name);
+					DBMS_OUTPUT.PUT_LINE('Module3');
+				ELSE
+					DBMS_OUTPUT.PUT_LINE('Domain:'||v_d_name);
+					DBMS_OUTPUT.PUT_LINE('Module2');
+				END IF;
+			ELSE
+				DBMS_OUTPUT.PUT_LINE('Domain:'||v_d_name);
+				DBMS_OUTPUT.PUT_LINE('Module1');
+			END IF;
+		END IF;
+	END IF;
+END;
+BEGIN
+	SELECT COUNT(*) INTO v_count FROM TRAINEE WHERE T_ID=v_t_id;
+	IF (v_count=1)
+	THEN
+		Trainee(v_t_id);
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('No such trainee');
+	END IF;
+END;
+/
+
+
+
+
+declare
+sys_date DATE;
+st_date date:=to_date('24/02/1996','DD/MM/YYYY');
+end_date date;
+begin
+select to_date(sysdate,'DD/MM/YYYY') into sys_date from dual;
+dbms_output.put_line(sys_date);
+if ( sys_date >  st_date) 
+then
+	DBMS_OUTPUT.PUT_LINE('if');
+end if;
+end;
+/

@@ -1,0 +1,200 @@
+
+*******************************FETCHING DETAILS*******************************
+
+DECLARE
+v_id NUMBER(6);
+v_name VARCHAR(50);
+v_email VARCHAR(50);
+v_contact NUMBER(10);
+v_address VARCHAR(50);
+v_mentor VARCHAR(50);
+v_domain VARCHAR(50);
+v_module_id NUMBER(6);
+v_choice NUMBER(2);
+v_d_name VARCHAR(50);
+s_id NUMBER(6);
+PROCEDURE Trainee_Info (v_id IN NUMBER)
+AS
+BEGIN
+	SELECT T_name,email,contact,address,mentor,domain INTO v_name,v_email,v_contact,v_address,v_mentor,v_domain FROM TRAINEE WHERE t_id=v_id;
+	DBMS_OUTPUT.PUT_LINE('**********Trainee details************');
+	DBMS_OUTPUT.PUT_LINE('Id:'||v_id);	
+	DBMS_OUTPUT.PUT_LINE('Name:'||v_name);
+	DBMS_OUTPUT.PUT_LINE('Email:'||v_email);
+	DBMS_OUTPUT.PUT_LINE('contact:'||v_contact);
+	DBMS_OUTPUT.PUT_LINE('Address:'||v_address);
+	DBMS_OUTPUT.PUT_LINE('Mentor:'||v_mentor);
+	DBMS_OUTPUT.PUT_LINE('Domain:'||v_domain);
+END;
+PROCEDURE Trainer_Info (v_id IN NUMBER)
+AS
+BEGIN
+        SELECT Tr_name,t_email,module_id,t_contact INTO v_name,v_email,v_module_id,v_contact FROM TRAINER WHERE tr_id=v_id;
+	DBMS_OUTPUT.PUT_LINE('**********Trainer details************');
+	DBMS_OUTPUT.PUT_LINE('Id:'||v_id);	
+	DBMS_OUTPUT.PUT_LINE('Name:'||v_name);
+	DBMS_OUTPUT.PUT_LINE('Email:'||v_email);
+	DBMS_OUTPUT.PUT_LINE('Module id'||v_module_id);
+	DBMS_OUTPUT.PUT_LINE('Contact:'||v_contact);
+END;
+PROCEDURE Mentor_Info (v_id IN NUMBER)
+AS
+BEGIN
+	SELECT m_name,d_name,m_email,m_contact INTO v_name,v_d_name,v_email,v_contact FROM MENTOR WHERE m_id=v_id;
+	DBMS_OUTPUT.PUT_LINE('**********Mentor details************');
+	DBMS_OUTPUT.PUT_LINE('Id:'||v_id);	
+	DBMS_OUTPUT.PUT_LINE('Name:'||v_name);
+	DBMS_OUTPUT.PUT_LINE('Domain:'||v_d_name);
+	DBMS_OUTPUT.PUT_LINE('Email:'||v_email);
+	DBMS_OUTPUT.PUT_LINE('Contact:'||v_contact);
+END;
+PROCEDURE Hr_Info (v_id IN NUMBER)
+AS
+BEGIN
+	SELECT hr_name,s_id,hr_email,hr_contact INTO v_name,s_id,v_email,v_contact FROM HR WHERE hr_id=v_id;
+	DBMS_OUTPUT.PUT_LINE('**********HR details************');
+	DBMS_OUTPUT.PUT_LINE('Id:'||v_id);	
+	DBMS_OUTPUT.PUT_LINE('Name:'||v_name);
+	DBMS_OUTPUT.PUT_LINE('Slot id:'||s_id);
+	DBMS_OUTPUT.PUT_LINE('Email:'||v_email);
+	DBMS_OUTPUT.PUT_LINE('Contact:'||v_contact);
+END;
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('Enter choice for details(1-Trainee,2-Trainer,3-Mentor,4-Hr)');
+	v_choice:=&choice;
+	CASE v_choice
+		WHEN 1
+		THEN
+			v_id := &Trainee_id;
+			Trainee_Info(v_id);
+		WHEN 2
+		THEN
+			v_id:=&trainer_id;
+			Trainer_Info(v_id);
+		WHEN 3
+		THEN
+			v_id:=&mentor_id;
+			Mentor_Info(v_id);
+		WHEN 4
+		THEN
+			v_id:=&hr_id;
+			Hr_Info(v_id);
+		ELSE
+			DBMS_OUTPUT.PUT_LINE('Invalid choice');
+	END CASE;
+END;	
+/
+
+
+
+
+
+
+******************************MODULE AND TRAINER INFO***********************
+
+
+DECLARE 
+v_mod_num NUMBER:=&mod_num;
+v_domain_name VARCHAR(20):='&dom_name';
+v_module_name VARCHAR(20);
+v_trainer_name VARCHAR(20);
+v_start_date DATE;
+v_end_date DATE;
+v_exam_date DATE;
+PROCEDURE Module1_Info(v_mod_num IN NUMBER,v_domain_name IN VARCHAR) 
+IS
+BEGIN
+	SELECT M.MODULE1_NAME ,T.TR_NAME,M.M1_START_DATE,M.M1_END_DATE,M.M1_EXAM_DATE INTO v_module_name,v_trainer_name,v_start_date,v_end_date,v_exam_date FROM MODULE1 M,TRAINER T WHERE M.T_ID=T.TR_ID AND D_NAME=v_domain_name;
+	DBMS_OUTPUT.PUT_LINE('Module name:'||v_module_name);
+	DBMS_OUTPUT.PUT_LINE('Trainer name:'||v_trainer_name);
+	DBMS_OUTPUT.PUT_LINE('Module1 start date:'||v_start_date);
+	DBMS_OUTPUT.PUT_LINE('Module1 end date:'||v_end_date);
+	DBMS_OUTPUT.PUT_LINE('Module1 exam date:'||v_exam_date);
+END;
+PROCEDURE Module2_Info(v_mod_num IN NUMBER,v_domain_name IN VARCHAR) 
+IS
+BEGIN
+	SELECT M1.MODULE2_NAME ,T1.TR_NAME,M1.M2_START_DATE,M1.M2_END_DATE,M1.M2_EXAM_DATE INTO v_module_name,v_trainer_name,v_start_date,v_end_date,v_exam_date FROM MODULE2 M1,TRAINER T1 WHERE M1.T_ID=T1.TR_ID AND D_NAME=v_domain_name;
+	DBMS_OUTPUT.PUT_LINE('Module name:'||v_module_name);
+	DBMS_OUTPUT.PUT_LINE('Trainer name:'||v_trainer_name);
+	DBMS_OUTPUT.PUT_LINE('Module2 start date:'||v_start_date);
+	DBMS_OUTPUT.PUT_LINE('Module2 end date:'||v_end_date);
+	DBMS_OUTPUT.PUT_LINE('Module2 exam date:'||v_exam_date);
+END;
+PROCEDURE Module3_Info(v_mod_num IN NUMBER,v_domain_name IN VARCHAR) 
+IS
+BEGIN
+	SELECT M2.MODULE3_NAME ,T2.TR_NAME,M2.M3_START_DATE,M2.M3_END_DATE,M2.M3_EXAM_DATE INTO v_module_name,v_trainer_name,v_start_date,v_end_date,v_exam_date FROM MODULE3 M2,TRAINER T2 WHERE M2.T_ID=T2.TR_ID AND D_NAME=v_domain_name;
+	DBMS_OUTPUT.PUT_LINE('Module name:'||v_module_name);
+	DBMS_OUTPUT.PUT_LINE('Trainer name:'||v_trainer_name);
+	DBMS_OUTPUT.PUT_LINE('Module3 start date:'||v_start_date);
+	DBMS_OUTPUT.PUT_LINE('Module3 end date:'||v_end_date);
+	DBMS_OUTPUT.PUT_LINE('Module3 exam date:'||v_exam_date);
+END;
+BEGIN
+	CASE v_mod_num
+		WHEN 1
+		THEN
+			Module1_Info(v_mod_num,v_domain_name);
+		WHEN 2
+		THEN
+			Module2_Info(v_mod_num,v_domain_name);
+		WHEN 3
+		THEN
+			Module3_Info(v_mod_num,v_domain_name);
+		ELSE
+			DBMS_OUTPUT.PUT_LINE('No such module');
+	END CASE;
+END;
+/
+
+
+/*******************************************************************Slot and HR Info********************************************************
+ 
+DECLARE
+ v_slot_id NUMBER(4):=&slotid;
+ v_hr_id NUMBER(6);
+ v_hr_name VARCHAR(20);
+ v_hr_contact NUMBER(10);
+ v_hr_email VARCHAR(50);
+ PROCEDURE Hr_Info(v_slot_id IN NUMBER)
+ IS
+ BEGIN
+ select HR_id,HR_NAME,HR_CONTACT,HR_EMAIL INTO v_hr_id,v_hr_name,v_hr_contact,hr_email FROM Hr where S_ID=v_slot_id;
+ DBMS_OUTPUT.PUT_LINE('Id:'||v_hr_id);
+ DBMS_OUTPUT.PUT_LINE('Name:'||v_hr_name);
+ DBMS_OUTPUT.PUT_LINE('Contact:'||v_hr_contact);
+ DBMS_OUTPUT.PUT_LINE('Email:'||v_hr_email);
+ END;
+ BEGIN
+ Hr_Info(v_slot_id);
+ END;
+
+/**********************************************************Domain and Mentor info*************************************************************
+
+
+DECLARE
+v_domain_name VARCHAR(20):='&domain';
+v_mentor_id NUMBER(6);
+v_mentor_name VARCHAR(20);
+v_mentor_contact NUMBER(10);
+v_mentor_email VARCHAR(50);
+v_d_start DATE;
+v_d_end DATE;
+PROCEDURE Mentor_Info(v_domain_name IN VARCHAR)
+IS
+BEGIN
+ 	select M.M_id,M.M_NAME,M.M_CONTACT,M.M_EMAIL,D.D_START_DATE,D.D_END_DATE INTO v_mentor_id,v_mentor_name,v_mentor_contact,v_mentor_email,v_d_start,v_d_end FROM MENTOR M,DOMAIN D where M.D_NAME=D.D_NAME AND M.D_NAME=v_domain_name;
+ 	DBMS_OUTPUT.PUT_LINE('Id:'||v_mentor_id);
+ 	DBMS_OUTPUT.PUT_LINE('Name:'||v_mentor_name);
+ 	DBMS_OUTPUT.PUT_LINE('Contact:'||v_mentor_contact);
+ 	DBMS_OUTPUT.PUT_LINE('Email:'||v_mentor_email);
+	DBMS_OUTPUT.PUT_LINE('Domain start date:'||v_d_start);
+	DBMS_OUTPUT.PUT_LINE('Domain end date:'||v_d_end);
+END;
+BEGIN
+	Mentor_Info(v_domain_name);
+END;
+/
+
+/******************************************
